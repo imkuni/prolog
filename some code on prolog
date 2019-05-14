@@ -1,0 +1,77 @@
+Helloworld!
+program :- write('Hello, world!').
+:- program.
+% --------------------------------------------------------------------------------------------------------------------------
+% 1 - Asal sayı hesaplama (Prime number)
+divisible(X,Y) :- 0 is X mod Y, !.
+divisible(X,Y) :- X > Y+1, divisible(X, Y+1).
+isPrime(2) :- true,!.
+isPrime(X) :- X < 2,!,false.
+isPrime(X) :- not(divisible(X, 2)).
+
+program :-
+isPrime(11) -> write('true') ; write('false').
+:- program.
+
+% Output:
+% true
+
+% --------------------------------------------------------------------------------------------------------------------------
+% 2 - Fibonacci sayısı hesaplama (Fibonacci number)
+fib(0, 1) :- !.
+fib(1, 1) :- !.
+fib(N, Result) :- N1 is N - 1, N2 is N - 2, fib(N1, Result1), fib(N2, Result2), Result is Result1 + Result2.
+
+program :-
+% 2+3=5
+fib(4, 5) -> write('true') ; write('false').
+:- program.
+
+% Output:
+% true
+
+% --------------------------------------------------------------------------------------------------------------------------
+% 3 - Mükemmel sayı hesaplama (Perfect number)
+factors(_,N,N,_).
+factors(X,N,NT,Sum):-
+    N < NT,
+    (   0 is X mod N ->  
+        Sum1 = Sum + N
+    ; Sum1 = Sum),
+    N1 is N + 1,
+    factors(X,N1,NT,Sum1).
+
+perfect(X):-
+    XT is X/2 + 1,
+    factors(X,1,XT,0).
+    
+program :-
+perfect(28) -> write('true') ; write('false').
+:- program.
+
+% Output:
+% true
+
+% --------------------------------------------------------------------------------------------------------------------------
+% 4 - Sihirli kareler (Magic squares)
+solve3x3([A1, A2, A3, B1, B2, B3, C1, C2, C3]):-
+
+	/* 1-9 arasında doğru permütasyon kontrolü*/
+	permutation([1,2,3,4,5,6,7,8,9], [A1, A2, A3, B1, B2, B3, C1, C2, C3]),
+
+	/* Satır, sütun ve diyagramların toplamlarının 15 olduğunun kontrolü*/
+	A1 + A2 + A3 =:= 15, /*Checks the sum of Row 	1*/
+	B1 + B2 + B3 =:= 15, /*Checks the sum of Row 	2*/
+	C1 + C2 + C3 =:= 15, /*Checks the sum of Row 	3*/
+	A1 + B1 + C1 =:= 15, /*Checks the sum of Col 	1*/
+	A2 + B2 + C2 =:= 15, /*Checks the sum of Col 	2*/
+	A1 + B2 + C3 =:= 15, /*Checks the sum of Col 	3*/
+	A1 + B2 + C3 =:= 15, /*Checks the sum of Diag 	1*/
+	A3 + B2 + C1 =:= 15. /*Checks the sum of Diag 	2*/
+    
+program :-
+solve3x3([8, 3, 4, 1, 5, 9, 6, 7, 2]) -> write('true') ; write('false').
+:- program.
+
+% Output:
+% True
